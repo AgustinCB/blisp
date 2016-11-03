@@ -1,30 +1,19 @@
 'use strict'
 
 import Reader from './reader'
-
-export default class Interpreter {
-  constructor () {
-    this.prompt = '> '
-    this.history = []
-  }
-
-  addHistory (input) {
-    this.history.push(input)
-  }
-
-  interpret (input) {
-    this.addHistory(input)
-    return input
-  }
-}
+import Interpreter from './interpreter'
 
 const main = () => {
   const interpreter = new Interpreter(),
     rl = new Reader(),
     read = function () {
       return rl.ask(interpreter.prompt)
-        .then((res) => {
-          console.log(interpreter.interpret(res))
+        .then((input) => {
+          const result = interpreter.interpret(input),
+            response = result.length ?
+                          result.values[0] : // TODO: Create in the results a getter of values
+                          'Ups, wrong syntax!!'
+          console.log(response)
           return read()
         })
     }

@@ -32,5 +32,8 @@
     "jsdox": "^0.4.10",
     "mocha": "^2.5.3",
     "standard": "^7.1.2"
+  },
+  "dependencies": {
+    "happy-parser": "^1.0.3"
   }
 }
