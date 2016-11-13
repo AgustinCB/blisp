@@ -1,5 +1,7 @@
 'use strict'
 
+const whitespaces = " \n\t\v\f\r"
+
 /**
  * Alias for promisify where the callback receives (res)
  */
@@ -37,3 +39,6 @@ export function invertPromise(promise) {
     .then((res) => Promise.reject(res))
     .catch((err) => Promise.resolve(err))
 }
+
+export const isSpace = (str) =>
+  whitespaces.includes(str)

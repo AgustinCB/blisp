@@ -9,11 +9,20 @@ const main = () => {
     read = function () {
       return rl.ask(interpreter.prompt)
         .then((input) => {
-          const result = interpreter.interpret(input),
-            response = result.length ?
-                          result.values[0] : // TODO: Create in the results a getter of values
-                          'Ups, wrong syntax!!'
+          const result = interpreter.interpret(input)
+
+          if (!result.length) throw new Error('Wrong syntax!!')
+
+          const response = result.get()
+
+          if (response instanceof Error) throw response
+
           console.log(response)
+
+          return read()
+        })
+        .catch((err) => {
+          console.log(err)
           return read()
         })
     }
