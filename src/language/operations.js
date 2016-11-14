@@ -8,14 +8,8 @@ const processList = (list, first_list = true) => {
   if (first_list && list.length && list[0].length !== undefined && typeof list[0] !== 'string') {
     list = list[0]
   }
-  if (first_list && list.length && list[0] instanceof QExpression) {
-    list = list[0].list
-  }
   if (first_list && list instanceof QExpression) {
     list = list.list
-  }
-  if (first_list && list.length && list[0] instanceof SExpression) {
-    list = list[0].run()
   }
   if (first_list && list instanceof SExpression) {
     list = list.run()
@@ -228,7 +222,7 @@ export const func = function () {
     return new Error('List of paramenters should be symbols')
   }
 
-  return function () {
+  const result = function () {
     const funcArgs = [...arguments].map((arg) => arg instanceof Symbol? arg.value : arg)
 
     if (funcArgs.length > arg_list.length) {
@@ -249,4 +243,5 @@ export const func = function () {
     environment.popNamespace()
     return result
   }
+  return result.bind(result)
 }
