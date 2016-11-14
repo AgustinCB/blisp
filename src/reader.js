@@ -1,6 +1,5 @@
 'use strict'
 
-import readline from 'readline'
 import {promisifyInverse as promisify} from './util'
 
 /**
@@ -8,14 +7,16 @@ import {promisifyInverse as promisify} from './util'
  */
 export default class Reader {
   constructor (input = process.stdin, output = process.stdout) {
-    this.rl = readline.createInterface({ input, output })
+    this.input = input
+    this.output = output
   }
 
   ask (question) {
-    return promisify(this.rl.question.bind(this.rl), question)
-  }
-
-  close () {
-    this.rl.close()
+    this.output.write(question)
+    return new Promise((resolve, reject) => {
+      this.input.on('data', resolve)
+      this.input.on('error', reject)
+      this.input.on('end', resolve)
+    })
   }
 }

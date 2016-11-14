@@ -4,13 +4,11 @@ import * as lang from './language'
 import {list} from './language/operations'
 
 export default class Interpreter {
-  constructor () {
-    this.prompt = '> '
+  constructor (prompt) {
+    if (prompt === undefined) prompt = '> '
+    if (typeof prompt !== 'string') prompt = ''
+    this.prompt = '' + prompt
     this.history = []
-  }
-
-  addHistory (input) {
-    this.history.push(input)
   }
 
   parseError (res) {
@@ -23,7 +21,6 @@ export default class Interpreter {
   }
 
   interpret (input) {
-    this.addHistory(input)
     const res = lang.statment.parse(input)
 
     this.parseError(res)
