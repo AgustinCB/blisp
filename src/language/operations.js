@@ -1,12 +1,13 @@
 'use strict'
 
-import {SExpression, QExpression} from './sexpression'
+import {SExpression, QExpression} from './expressions'
 import Symbol from './symbol'
 import environment from './environment'
 
 const processList = (list, first_list = true) => {
-  if (first_list && list.length && list[0].length !== undefined && typeof list[0] !== 'string') {
-    list = list[0]
+  if (first_list && list.length === 1 &&
+    ((list[0].length !== undefined && typeof list[0] !== 'string') || list[0] instanceof Symbol)) {
+    list = list[0] instanceof Symbol? list[0].value : list[0]
   }
   if (first_list && list instanceof QExpression) {
     list = list.list
@@ -51,6 +52,7 @@ export const list = {
   },
   head: function () {
     const args = processList([...arguments])
+    console.log(args, [...arguments])
 
     if (args.length === undefined) return new Error('Head takes arguments!')
 
@@ -88,6 +90,10 @@ export const list = {
     const args = [...arguments]
     
     if (!args.length) return new Error('Eval takes one argument!')
+
+    if (args[0] instanceof Symbol) {
+      args[0] = args[0].value
+    }
 
     if (args[0] instanceof SExpression) {
       args[0] = args[0].run()
@@ -222,14 +228,27 @@ export const func = function () {
     return new Error('List of paramenters should be symbols')
   }
 
-  const result = function () {
-    const funcArgs = [...arguments].map((arg) => arg instanceof Symbol? arg.value : arg)
+  // Check for dynamic arguments
+  const dyn_args = arg_list.list.filter((symbol) => symbol.name[0] === '&')
+  if (dyn_args.length > 1) {
+    return new Error('Only one dynamic arguments name is allowed')
+  }
+  if (dyn_args[0] && arg_list.list.indexOf(dyn_args[0]) !== arg_list.length - 1) {
+    return new Error('Dynamic arguments name should be the last one')
+  }
 
-    if (funcArgs.length > arg_list.length) {
+  const result = function () {
+    const extra_args = dyn_args[0],
+      funcArgs = [...arguments].map((arg) => arg instanceof Symbol? arg.value : arg)
+
+    if (funcArgs.length > arg_list.length && !extra_args) {
       return new Error('Passing too many arguments!')
     }
     if (funcArgs.length < arg_list.length) {
       return this.bind(this, ...funcArgs)
+    }
+    if (extra_args) {
+      funcArgs[arg_list.length - 1] = new QExpression(funcArgs.slice(arg_list.length - 1))
     }
 
     environment.addNamespace(body.toString())

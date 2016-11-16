@@ -1,5 +1,5 @@
 import environment from './environment'
-import {SExpression} from './sexpression'
+import {SExpression} from './expressions'
 
 export default class Symbol {
   constructor(name, value) {

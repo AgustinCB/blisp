@@ -4,7 +4,7 @@ import * as parsec from 'happy-parser'
 import * as operations from './operations'
 import * as grammar from './grammar'
 import Symbol from './symbol'
-import {SExpression, QExpression} from './sexpression'
+import {SExpression, QExpression} from './expressions'
 
 export const builtins = parsec.Parser.operations(
   [ grammar.chars.plus, operations.int.plus ],

@@ -17,3 +17,8 @@
 (def '(add-mult) (# '(x y) '(* x (+ x y))))
 (add-mult 10 20)
 (add-mult x y)
+((add-mult x) y)
+(+ (eval '(1 2 3 4)))
+(def '(add-mult) (# '(x &args) '(* x (+ &args))))
+(add-mult x 1 2 3 4 5)
+((add-mult x) 1 2 3 4 5)

@@ -1,7 +1,5 @@
 'use strict'
 
-import {promisifyInverse as promisify} from './util'
-
 /**
  * Abstraction of readline using promises
  */
