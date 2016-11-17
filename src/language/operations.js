@@ -10,7 +10,7 @@ const processList = (list, first_list = true) => {
     list = list[0] instanceof Symbol? list[0].value : list[0]
   }
   if (first_list && list instanceof QExpression) {
-    list = list.list
+    return list.list
   }
   if (first_list && list instanceof SExpression) {
     list = list.run()
@@ -52,7 +52,6 @@ export const list = {
   },
   head: function () {
     const args = processList([...arguments])
-    console.log(args, [...arguments])
 
     if (args.length === undefined) return new Error('Head takes arguments!')
 
@@ -196,9 +195,13 @@ export const def = function () {
 
   if (args.length < 2) return new Error('You should pass at least two arguments')
 
-  const symbols = args[0] instanceof Symbol? args[0].dry_value : args[0],
-        values = args.slice(1)
+  const symbols = (function () {
+    if (args[0] instanceof Symbol) return args[0].dry_value
+    if (args[0] instanceof SExpression && !(args[0] instanceof QExpression)) return args[0].run()
+    return args[0]
+  })(), values = args.slice(1)
 
+  //console.log(symbols, values)
   if (!(symbols instanceof SExpression)) {
     return new Error('First paramenter should be a SExpression')
   }

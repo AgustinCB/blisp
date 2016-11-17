@@ -19,18 +19,22 @@ export default class Interpreter {
   loadStandardLib () {
     const lib = './src/language/stdlib',
       readFile = (file) => {
-        console.log('asd', file, lib)
         return promisify(fs.readFile, path.join(lib, file))
       }, loadCode = (code) => {
-        this.interpret(code)
+        code.toString().split('\n').forEach((codeLine) =>
+          this.interpret(codeLine)
+        )
       }
 
-    return promisify(fs.readdir, )
+    return promisify(fs.readdir, lib)
       .then((files) =>
         files
           .filter((file) => file.endsWith('.blisp'))
-          .forEach((file) => readFile(file).then(loadCode))
+          .forEach((file) =>
+            readFile(file).then(loadCode).catch((err) => console.log(err))
+          )
       )
+      .catch((err) => console.log(err))
   }
 
   parseError (res) {

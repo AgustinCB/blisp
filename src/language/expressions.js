@@ -6,6 +6,7 @@ export class SExpression {
   }
 
   run() {
+    if (this.list instanceof SExpression) return this.list.run()
     let lead = this.list[0] instanceof Symbol? this.list[0].value : this.list[0]
 
     if (lead instanceof SExpression && !(lead instanceof QExpression)) {

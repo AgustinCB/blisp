@@ -1,5 +1,5 @@
 import environment from './environment'
-import {SExpression} from './expressions'
+import {SExpression, QExpression} from './expressions'
 
 export default class Symbol {
   constructor(name, value) {
@@ -15,6 +15,7 @@ export default class Symbol {
 
   get value() {
     const _value = this.dry_value
+    if (_value instanceof QExpression) return _value.list
     if (_value instanceof SExpression) return _value.run()
     return _value
   }
