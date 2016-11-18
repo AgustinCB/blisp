@@ -31,5 +31,6 @@ export const keywords = {
   eval: parsec.item.startsWith('eval').then(parsec.spaces),
   length: parsec.item.startsWith('length').then(parsec.spaces),
   def: parsec.item.startsWith('def').then(parsec.spaces),
+  global: parsec.item.startsWith('global').then(parsec.spaces),
   func: parsec.item.startsWith('#').then(parsec.spaces)
 }

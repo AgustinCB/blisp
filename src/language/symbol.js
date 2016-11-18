@@ -15,7 +15,7 @@ export default class Symbol {
 
   get value() {
     const _value = this.dry_value
-    if (_value instanceof QExpression) return _value.list
+    if (_value instanceof QExpression) return _value
     if (_value instanceof SExpression) return _value.run()
     return _value
   }

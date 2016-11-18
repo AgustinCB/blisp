@@ -1,3 +1,1 @@
-(def '(func) (# '(args body) '(def (head args) (# (tail args) body))))
-(func '(unpack f xs) '(eval (join (list f) xs)))
-(func '(pack f & xs) '(f xs))
+(def '(func) (# '(args body) '(global (head args) '(# (tail args) body))))

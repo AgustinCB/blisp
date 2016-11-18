@@ -13,7 +13,7 @@ export default class Interpreter {
     this.prompt = '' + prompt
     this.history = []
 
-    //this.loadStandardLib()
+    this.loadStandardLib()
   }
 
   loadStandardLib () {

@@ -19,7 +19,7 @@ const getResponse = (interpreter, input) => {
 
 const main = (command, file, prompt) => {
   const interpreter = new Interpreter(prompt),
-    inputStream = file? fs.createReadStream(file) : process.stdout
+    inputStream = file? fs.createReadStream(file) : process.stdin
 
   if (command) {
     console.log(getResponse(interpreter, command))

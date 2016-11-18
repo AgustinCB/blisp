@@ -28,8 +28,11 @@ class Environment {
     return namespace
   }
 
-  set (name, value) {
-    this.namespacesPile.slice(-1)[0].set(name, value)
+  set (name, value, environment) {
+    const namespace = environment?
+      this.namespaces.get(environment) :
+      this.namespacesPile.slice(-1)[0]
+    namespace.set(name, value)
   }
 
   get (name) {

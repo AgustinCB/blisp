@@ -20,7 +20,8 @@ export const builtins = parsec.Parser.operations(
   [ grammar.keywords.eval, operations.list.eval ],
   [ grammar.keywords.length, operations.list.length ],
   [ grammar.keywords.func, operations.func ],
-  [ grammar.keywords.def, operations.def ]
+  [ grammar.keywords.def, operations.def ],
+  [ grammar.keywords.global, operations.global ]
 ).trim()
 
 const symbol = grammar.symbol_name.then((symbol_name) => {
