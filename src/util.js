@@ -42,3 +42,10 @@ export function invertPromise(promise) {
 
 export const isSpace = (str) =>
   whitespaces.includes(str)
+
+export const toArray = (value) => {
+  if (value === undefined) return value
+  return value.constructor === Array?
+    value :
+    [ value ]
+}

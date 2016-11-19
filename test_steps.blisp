@@ -1,3 +1,4 @@
+(join (list 1 2 3) (list 12 3) '(1 2 3))
 (def '(ref) (head '(list 1 2 3 4)))
 (list ref)
 (ref 1 2 3)

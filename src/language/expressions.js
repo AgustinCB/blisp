@@ -1,4 +1,5 @@
 import Symbol from './symbol'
+import {toArray} from '../util'
 
 export class SExpression {
   constructor(list) {
@@ -16,7 +17,7 @@ export class SExpression {
       return lead(...this.list.slice(1))
     }
 
-    if (!this.list.map) return [ this.list ]
+    if (!this.list || !this.list.constructor === Array) return toArray(this.list)
     return this.list.map((v) => v instanceof Symbol? v.value : v)
   }
 

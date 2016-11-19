@@ -3,19 +3,20 @@
 import {SExpression, QExpression} from './expressions'
 import Symbol from './symbol'
 import environment from './environment'
+import {toArray} from '../util'
 
-const processList = (list, first_list = true) => {
-  if (first_list && list.length === 1 &&
+const processList = (list) => {
+  if (list.length === 1 &&
     ((list[0].length !== undefined && typeof list[0] !== 'string') || list[0] instanceof Symbol)) {
     list = list[0] instanceof Symbol? list[0].value : list[0]
   }
-  if (first_list && list instanceof QExpression) {
-    return list.list
+  if (list instanceof QExpression) {
+    return list.run()
   }
-  if (first_list && list instanceof SExpression) {
+  if (list instanceof SExpression) {
     list = list.run()
   }
-  if (!list.map) return [ list ]
+  list = toArray(list)
   return list.map((item) => {
     if (item instanceof SExpression) return item.run()
     if (item instanceof Symbol) return item.value
@@ -78,7 +79,7 @@ export const list = {
     return args.slice(0, -1)
   },
   join: function () {
-    const args = processList([...arguments], false).filter((list) => list.length && list !== 'string')
+    const args = processList([...arguments])
    
     if (args.length === undefined) return new Error('Join takes arguments!')
     
