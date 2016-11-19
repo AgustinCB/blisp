@@ -15,9 +15,8 @@ const processList = (list, first_list = true) => {
   if (first_list && list instanceof SExpression) {
     list = list.run()
   }
-  if (list.length === undefined) return [ list ]
+  if (!list.map) return [ list ]
   return list.map((item) => {
-    if (item instanceof QExpression) return item.list
     if (item instanceof SExpression) return item.run()
     if (item instanceof Symbol) return item.value
     return item
@@ -48,7 +47,7 @@ export const int = {
 
 export const list = {
   list: function () {
-    return processList([...arguments], false)
+    return processList([...arguments])
   },
   head: function () {
     const args = processList([...arguments])
@@ -97,17 +96,9 @@ export const list = {
     if (args[0] instanceof SExpression) {
       args[0] = args[0].run()
     }
-
-    if (args[0] instanceof QExpression) {
-      args[0] = args[0].list
-    }
    
     if (args[0].length !== undefined && typeof args[0] !== 'string' && typeof args[0] !== 'function') {
       return SExpression.run(args[0])
-    }
-
-    if (args.length > 1) {
-      return SExpression.run(args)
     }
 
     return args[0]
