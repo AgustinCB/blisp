@@ -1,1 +1,1 @@
-(def '(func) (# '(args body) '(global (head args) '(# (tail args) body))))
+(def '(func) (# '(args body) (global (head args) (# (tail args) body))))

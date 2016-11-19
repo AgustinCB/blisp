@@ -101,13 +101,13 @@ export const list = {
     if (args[0] instanceof QExpression) {
       args[0] = args[0].list
     }
-    
+   
     if (args[0].length !== undefined && typeof args[0] !== 'string' && typeof args[0] !== 'function') {
-      return (new SExpression(args[0])).run()
+      return SExpression.run(args[0])
     }
 
     if (args.length > 1) {
-      return (new SExpression(args)).run()
+      return SExpression.run(args)
     }
 
     return args[0]
@@ -225,7 +225,7 @@ export const def = function () {
 
 export const global = function () {
   const args = [...arguments]
-  def(...arguments, 'global')
+  def(...args, 'global')
 }
 
 export const func = function () {

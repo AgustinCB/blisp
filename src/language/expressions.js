@@ -2,11 +2,10 @@ import Symbol from './symbol'
 
 export class SExpression {
   constructor(list) {
-    this.list = list
+    this.list = list instanceof SExpression? list.list : list
   }
 
   run() {
-    if (this.list instanceof SExpression) return this.list.run()
     let lead = this.list[0] instanceof Symbol? this.list[0].value : this.list[0]
 
     if (lead instanceof SExpression && !(lead instanceof QExpression)) {
@@ -17,6 +16,7 @@ export class SExpression {
       return lead(...this.list.slice(1))
     }
 
+    if (!this.list.map) return [ this.list ]
     return this.list.map((v) => v instanceof Symbol? v.value : v)
   }
 
@@ -25,5 +25,12 @@ export class SExpression {
   }
 }
 
+SExpression.run = function (list) {
+  return (new SExpression(list)).run()
+}
+
 export class QExpression extends SExpression {
+  run() {
+    return this.list
+  }
 }
