@@ -1,21 +1,25 @@
 'use strict'
 
+import EventEmitter from 'events'
+import * as rlp from 'readline-promise'
+
 /**
  * Abstraction of readline using promises
  */
-export default class Reader {
+export default class Reader extends EventEmitter {
   constructor (input = process.stdin, output = process.stdout) {
-    this.input = input
-    this.output = output
+    super()
     this.cache = []
     this.errors = []
-    this.input.on('data', this.newData.bind(this))
-    this.input.on('error', this.newError.bind(this))
-    this.input.on('end', this.close.bind(this))
+    this.output = output
+
+    this.interface = rlp.createInterface({ input, output })
+    this.interface.each(this.newData.bind(this))
+      .caught(this.newError.bind(this))
   }
 
   ask (question) {
-    this.output.write(question)
+    if (question) this.output.write(question)
     return new Promise((resolve, reject) => {
       const interval = setInterval(() => {
         if (this.errors.length) {
@@ -40,5 +44,6 @@ export default class Reader {
 
   close () {
     // Something to do here?
+    this.emit('close')
   }
 }

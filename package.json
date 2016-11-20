@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "happy-parser": "^1.0.12",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "readline-promise": "0.0.1"
   }
 }

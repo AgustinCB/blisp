@@ -189,7 +189,7 @@ export const def = function () {
 
   const symbols = (function () {
     if (args[0] instanceof Symbol) return args[0].dry_value
-    if (args[0] instanceof SExpression && !(args[0] instanceof QExpression)) return args[0].run()
+    if (args[0].constructor === SExpression) return args[0].run()
     return args[0]
   })()
   const values = args.slice(1)
@@ -216,8 +216,7 @@ export const def = function () {
 }
 
 export const global = function () {
-  const args = [...arguments]
-  def(...args, 'global')
+  def(...arguments, 'global')
 }
 
 export const func = function () {

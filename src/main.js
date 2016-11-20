@@ -18,30 +18,33 @@ const getResponse = (interpreter, input) => {
 }
 
 const main = (command, file, prompt) => {
-  const interpreter = new Interpreter(prompt),
-    inputStream = file? fs.createReadStream(file) : process.stdin
+  const interpreter = new Interpreter(prompt)
 
   if (command) {
     console.log(getResponse(interpreter, command))
     return Promise.resolve()
   }
 
-  const rl = new Reader(inputStream),
-    read = function () {
+  let done = false
+  const inputStream = file? fs.createReadStream(file) : process.stdin,
+    rl = new Reader(inputStream)
+
+  rl.on('close', _ => done = true)
+  const read = function () {
       return rl.ask(interpreter.prompt)
         .then((input) => {
-          if (!input) return
           input = input.toString().trim()
+          if (!input) return read()
 
           input.split('\n').forEach((line) =>
             console.log(getResponse(interpreter, line))
           )
 
-          return read()
+          if (!done) return read()
         })
         .catch((err) => {
           console.log(err)
-          return read()
+          if (!done) return read()
         })
     }
 
