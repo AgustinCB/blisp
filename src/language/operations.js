@@ -174,11 +174,8 @@ export const conditionals = {
     if (args[0]) return args[1].run()
     else if (args[2]) return args[2].run()
   },
-  'if-not': function () {
+  unless: function () {
     return this.if(!arguments[0], ...arguments[1].slice(1))
-  },
-  'unless': function () {
-    return this['if-not'](...arguments)
   }
 }
 
