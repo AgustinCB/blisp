@@ -24,12 +24,14 @@ export const builtins = parsec.Parser.operations(
   [ grammar.keywords.global, operations.global ]
 ).trim()
 
+const booleans = grammar.false.or(grammar.true).trim()
+
 const symbol = grammar.symbol_name.then((symbol_name) => {
   return new Symbol(symbol_name)
 })
 
 const factor = parsec.lazy(() =>
-  parsec.int.or(list, unevaluatedStatment)
+  parsec.int.or(booleans, list, unevaluatedStatment)
 )
 
 const list = parsec.lazy(() =>

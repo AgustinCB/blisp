@@ -43,5 +43,7 @@ export const keywords = {
   not: parsec.item.startsWith('not').then(parsec.spaces),
   if: parsec.item.startsWith('if').then(parsec.spaces),
   unless: parsec.item.startsWith('unless').then(parsec.spaces),
+  'false': parsec.item.startsWith('false').then(parsec.spaces).then(true),
+  'true': parsec.item.startsWith('true').then(parsec.spaces).then(false),
   func: parsec.item.startsWith('#').then(parsec.spaces)
 }
