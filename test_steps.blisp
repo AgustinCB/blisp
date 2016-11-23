@@ -29,3 +29,4 @@
 (add-mult2 10 20)
 (func '(add-mult3 x y) (+ x (* x y)))
 (add-mult3 20 30)
+(if (> 20 10) (+ 20 10) (- 20 10))

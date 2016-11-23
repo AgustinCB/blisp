@@ -21,7 +21,18 @@ export const builtins = parsec.Parser.operations(
   [ grammar.keywords.length, operations.list.length ],
   [ grammar.keywords.func, operations.func ],
   [ grammar.keywords.def, operations.def ],
-  [ grammar.keywords.global, operations.global ]
+  [ grammar.keywords.global, operations.global ],
+  [ grammar.keywords.equals, operations.comparison.equals ],
+  [ grammar.keywords.notEquals, operations.comparison.notEquals ],
+  [ grammar.keywords.greaterThan, operations.comparison.graterThan ],
+  [ grammar.keywords.lesserThan, operations.comparison.lesserThan ],
+  [ grammar.keywords.greaterOrEqualsThan, operations.comparison.graterOrEqualsThan ],
+  [ grammar.keywords.lesserOrEqualsThan, operations.comparison.lesserOrEqualsThan ],
+  [ grammar.keywords.and, operations.boolean.and ],
+  [ grammar.keywords.or, operations.boolean.or ],
+  [ grammar.keywords.not, operations.boolean.not],
+  [ grammar.keywords.if, operations.conditionals.if ],
+  [ grammar.keywords.unless, operations.conditionals.unless ]
 ).trim()
 
 const booleans = grammar.false.or(grammar.true).trim()
