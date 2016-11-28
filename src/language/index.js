@@ -35,18 +35,18 @@ export const builtins = parsec.Parser.operations(
   [ grammar.keywords.unless, operations.conditionals.unless ]
 ).trim()
 
-const booleans = grammar.false.or(grammar.true).trim()
+const booleans = grammar.keywords.false.or(grammar.keywords.true).trim()
 
 const symbol = grammar.symbol_name.then((symbol_name) => {
   return new Symbol(symbol_name)
 })
 
 const factor = parsec.lazy(() =>
-  parsec.int.or(booleans, list, unevaluatedStatment)
+  parsec.int.or(list, unevaluatedStatment)
 )
 
 const list = parsec.lazy(() =>
-  builtins.or(symbol, factor).trim().many()
+  builtins.or(booleans, symbol, factor).trim().many()
   .between(...grammar.chars.parenthesis).then((elements) => new SExpression(elements))
 ).trim()
 

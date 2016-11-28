@@ -175,7 +175,8 @@ export const conditionals = {
     else if (args[2]) return args[2].run()
   },
   unless: function () {
-    return this.if(!arguments[0], ...arguments[1].slice(1))
+    const args = [...arguments]
+    return conditionals.if(!args[0], ...args.slice(1))
   }
 }
 
