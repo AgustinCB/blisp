@@ -12,25 +12,31 @@ export default class Reader extends EventEmitter {
     this.cache = []
     this.errors = []
     this.output = output
+    this.completed = false
 
     this.interface = rlp.createInterface({ input, output })
     this.interface.each(this.newData.bind(this))
       .caught(this.newError.bind(this))
+      .then(() => this.completed = true)
   }
 
   ask (question) {
     if (question) this.output.write(question)
     return new Promise((resolve, reject) => {
       const interval = setInterval(() => {
+        if (!this.errors.length && !this.cache.length && this.completed) {
+          clearInterval(interval)
+          this.emit('close')
+        }
         if (this.errors.length) {
           clearInterval(interval)
-          reject(this.errors.pop())
+          reject(this.errors.shift())
         }
         if (this.cache.length) {
           clearInterval(interval)
-          resolve(this.cache.pop())
+          resolve(this.cache.shift())
         }
-      }, 100)
+      }, 5)
     })
   }
 
@@ -40,10 +46,5 @@ export default class Reader extends EventEmitter {
 
   newError(error) {
     this.errors.push(data.toString())
-  }
-
-  close () {
-    // Something to do here?
-    this.emit('close')
   }
 }
