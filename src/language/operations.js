@@ -146,13 +146,13 @@ export const comparison = {
 
 export const boolean = {
   and: function () {
-    const args = [...arguments]
+    const args = processList([...arguments])
 
     if (!args.length) return new Error('And function needs arguments')
-    return args.findIndex((val) => !val) >= 0
+    return args.findIndex((val) => !val) == -1
   },
   or: function () {
-    const args = [...arguments]
+    const args = processList([...arguments])
 
     if (!args.length) return new Error('Or function needs arguments')
     return args.findIndex((val) => !!val) >= 0
@@ -161,7 +161,7 @@ export const boolean = {
     const args = [...arguments]
 
     if (!args.length) return new Error('Not function needs arguments')
-    return !args[0]
+    return !processElement(args[0])
   }
 }
 
