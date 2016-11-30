@@ -5,7 +5,11 @@ import Symbol from './symbol'
 import environment from './environment'
 import {toArray} from '../util'
 
-const processList = (list) => {
+const processElement = (item) => {
+    if (item instanceof SExpression) return item.run()
+    if (item instanceof Symbol) return item.value
+    return item
+  }, processList = (list) => {
   if (list.length === 1 &&
     ((list[0].length !== undefined && typeof list[0] !== 'string') || list[0] instanceof Symbol)) {
     list = list[0] instanceof Symbol? list[0].value : list[0]
@@ -17,11 +21,7 @@ const processList = (list) => {
     list = list.run()
   }
   list = toArray(list)
-  return list.map((item) => {
-    if (item instanceof SExpression) return item.run()
-    if (item instanceof Symbol) return item.value
-    return item
-  })
+  return list.map(processElement)
 }
 
 export const int = {
@@ -171,7 +171,7 @@ export const conditionals = {
 
     if (args.length < 2) return new Error('Conditions needs at least two arguments')
 
-    if (args[0]) return args[1].run()
+    if (processElement(args[0])) return args[1].run()
     else if (args[2]) return args[2].run()
   },
   unless: function () {
