@@ -46,3 +46,5 @@
 (or (not (= 10 10)) false)
 (and (= 10 10) true)
 (and (= 10 10) false)
+(curry + '(1 2 3))
+(uncurry head 1 2 3)

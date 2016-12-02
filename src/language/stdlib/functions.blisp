@@ -1,1 +1,3 @@
 (def '(func) (# '(args body) (global (head args) (# (tail args) body))))
+(func '(curry f xs) (eval (join (list f) xs)))
+(func '(uncurry f &xs) (f &xs))

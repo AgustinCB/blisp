@@ -209,11 +209,16 @@ export const def = function () {
   }
 
   symbols.list.forEach((symbol, index) => {
-    environment.set(symbol.name, values[index], env)
+    const val = values[index].constructor === QExpression?
+      values[index] :
+      processElement(values[index])
+    console.log('def', symbol.name, val)
+    environment.set(symbol.name, val, env)
   })
 }
 
 export const global = function () {
+  console.log('global', arguments)
   def(...arguments, 'global')
 }
 
@@ -226,6 +231,7 @@ export const func = function () {
         body = args[1] instanceof Symbol? args[1].dry_value : args[1]
 
   if (!(arg_list instanceof QExpression) || !(body instanceof SExpression)) {
+    console.log('arg_list', arg_list, 'body', body, args, environment.namespaces.get('global').get('curry'))
     return new Error('Paramenters should be instance of SExpression')
   }
 
