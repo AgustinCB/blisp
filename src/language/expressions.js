@@ -2,26 +2,26 @@ import Symbol from './symbol'
 import {toArray} from '../util'
 
 export class SExpression {
-  constructor(list) {
-    this.list = list instanceof SExpression? list.list : list
+  constructor (list) {
+    this.list = list instanceof SExpression ? list.list : list
   }
 
-  run() {
-    let lead = this.list[0] instanceof Symbol? this.list[0].value : this.list[0]
+  run () {
+    let lead = this.list[0] instanceof Symbol ? this.list[0].value : this.list[0]
 
     if (lead instanceof SExpression && !(lead instanceof QExpression)) {
       lead = lead.run()
     }
 
-    if (typeof lead === "function") {
+    if (typeof lead === 'function') {
       return lead(...this.list.slice(1))
     }
 
     if (!this.list || !this.list.constructor === Array) return toArray(this.list)
-    return this.list.map((v) => v instanceof Symbol? v.value : v)
+    return this.list.map((v) => v instanceof Symbol ? v.value : v)
   }
 
-  get length() {
+  get length () {
     return this.list.length
   }
 
@@ -47,7 +47,7 @@ SExpression.run = function (list) {
 }
 
 export class QExpression extends SExpression {
-  run() {
+  run () {
     return this.list
   }
 }

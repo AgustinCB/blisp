@@ -3,7 +3,6 @@
 import fs from 'fs'
 import path from 'path'
 import * as lang from './language'
-import {list} from './language/operations'
 import {promisify} from './util'
 
 export default class Interpreter {
@@ -17,14 +16,15 @@ export default class Interpreter {
   }
 
   loadStandardLib () {
-    const lib = './src/language/stdlib',
-      readFile = (file) => {
-        return promisify(fs.readFile, path.join(lib, file))
-      }, loadCode = (code) => {
-        code.toString().split('\n').forEach((codeLine) =>
-          this.interpret(codeLine)
-        )
-      }
+    const lib = './src/language/stdlib'
+    const readFile = (file) => {
+      return promisify(fs.readFile, path.join(lib, file))
+    }
+    const loadCode = (code) => {
+      code.toString().split('\n').forEach((codeLine) =>
+        this.interpret(codeLine)
+      )
+    }
 
     return promisify(fs.readdir, lib)
       .then((files) =>

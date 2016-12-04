@@ -1,9 +1,8 @@
 'use strict'
 
 import * as parsec from 'happy-parser'
-import {isSpace} from '../util'
 
-export const symbol_name = parsec.letter.or(parsec.symbol, parsec.int).satisfy((c) =>
+export const symbolName = parsec.letter.or(parsec.symbol, parsec.int).satisfy((c) =>
   c !== '(' && c !== ')' && c !== '\''
 ).many().satisfy((c) =>
   !c.split('').reduce((acc, v) => acc && !isNaN(parseInt(v)), true)

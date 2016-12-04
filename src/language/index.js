@@ -30,15 +30,15 @@ export const builtins = parsec.Parser.operations(
   [ grammar.keywords.lesserOrEqualsThan, operations.comparison.lesserOrEqualsThan ],
   [ grammar.keywords.and, operations.boolean.and ],
   [ grammar.keywords.or, operations.boolean.or ],
-  [ grammar.keywords.not, operations.boolean.not],
+  [ grammar.keywords.not, operations.boolean.not ],
   [ grammar.keywords.if, operations.conditionals.if ],
   [ grammar.keywords.unless, operations.conditionals.unless ]
 ).trim()
 
 const booleans = grammar.keywords.false.or(grammar.keywords.true).trim()
 
-const symbol = grammar.symbol_name.then((symbol_name) => {
-  return new Symbol(symbol_name)
+const symbol = grammar.symbol_name.then((symbolName) => {
+  return new Symbol(symbolName)
 })
 
 const factor = parsec.lazy(() =>

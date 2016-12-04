@@ -21,7 +21,7 @@ class Environment {
 
   popNamespace () {
     if (this.namespaces.length === 1) {
-      return null;
+      return null
     }
     const namespace = this.namespacesPile.pop()
     this.namespaces.delete(namespace.name)
@@ -29,14 +29,14 @@ class Environment {
   }
 
   set (name, value, environment) {
-    const namespace = environment?
-      this.namespaces.get(environment) :
-      this.namespacesPile.slice(-1)[0]
+    const namespace = environment
+      ? this.namespaces.get(environment)
+      : this.namespacesPile.slice(-1)[0]
     namespace.set(name, value)
   }
 
   get (name) {
-    for (let i = this.namespacesPile.length - 1; i >= 0; i --) {
+    for (let i = this.namespacesPile.length - 1; i >= 0; i--) {
       const namespace = this.namespacesPile[i]
       if (namespace.has(name)) {
         return namespace.get(name)
