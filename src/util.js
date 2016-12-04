@@ -1,6 +1,6 @@
 'use strict'
 
-const whitespaces = " \n\t\v\f\r"
+const whitespaces = ' \n\t\v\f\r'
 
 /**
  * Alias for promisify where the callback receives (res)
@@ -16,11 +16,11 @@ export function promisifyInverse () {
  * And the callback to receive paramenters (error, res)
  */
 export function promisify () {
-  const args = [...arguments],
-    fn = args[0],
-    fnArgs = args.slice(1)
+  const args = [...arguments]
+  const fn = args[0]
+  const fnArgs = args.slice(1)
 
-  return new Promise ((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     fnArgs.push((err, res) => {
       if (err) return reject(err)
       resolve(res)
@@ -34,7 +34,7 @@ export function promisify () {
  * @param {Promise} promise to invert
  * @return {Promise}
  */
-export function invertPromise(promise) {
+export function invertPromise (promise) {
   return promise
     .then((res) => Promise.reject(res))
     .catch((err) => Promise.resolve(err))
@@ -45,7 +45,7 @@ export const isSpace = (str) =>
 
 export const toArray = (value) => {
   if (value === undefined) return value
-  return value.constructor === Array?
-    value :
-    [ value ]
+  return value.constructor === Array
+    ? value
+    : [ value ]
 }

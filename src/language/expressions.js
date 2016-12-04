@@ -24,6 +24,22 @@ export class SExpression {
   get length() {
     return this.list.length
   }
+
+  map (fn) {
+    return this.list.map(fn)
+  }
+
+  forEach (fn) {
+    return this.list.forEach(fn)
+  }
+
+  reduce (fn, init) {
+    return this.list.reduce(fn, init)
+  }
+
+  slice (from, to) {
+    return new this.constructor(this.list.slice(from, to))
+  }
 }
 
 SExpression.run = function (list) {

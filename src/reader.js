@@ -17,7 +17,7 @@ export default class Reader extends EventEmitter {
     this.interface = rlp.createInterface({ input, output })
     this.interface.each(this.newData.bind(this))
       .caught(this.newError.bind(this))
-      .then(() => this.completed = true)
+      .then(() => { this.completed = true })
   }
 
   ask (question) {
@@ -40,11 +40,11 @@ export default class Reader extends EventEmitter {
     })
   }
 
-  newData(data) {
+  newData (data) {
     this.cache.push(data.toString())
   }
 
-  newError(error) {
-    this.errors.push(data.toString())
+  newError (error) {
+    this.errors.push(error.toString())
   }
 }

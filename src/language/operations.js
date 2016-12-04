@@ -6,16 +6,14 @@ import environment from './environment'
 import {toArray} from '../util'
 
 const processElement = (item) => {
-    if (item instanceof SExpression) return item.run()
-    if (item instanceof Symbol) return item.value
-    return item
-  }, processList = (list) => {
+  if (item instanceof SExpression) return item.run()
+  if (item instanceof Symbol) return item.value
+  return item
+}
+const processList = (list) => {
   if (list.length === 1 &&
     ((list[0].length !== undefined && typeof list[0] !== 'string') || list[0] instanceof Symbol)) {
-    list = list[0] instanceof Symbol? list[0].value : list[0]
-  }
-  if (list instanceof QExpression) {
-    return list.run()
+    list = list[0] instanceof Symbol ? list[0].value : list[0]
   }
   if (list instanceof SExpression) {
     list = list.run()
@@ -31,7 +29,7 @@ export const int = {
   },
   rest: function () {
     let args = processList([...arguments])
-    if (args.length == 1) args = [ 0, args[0] ]
+    if (args.length === 1) args = [ 0, args[0] ]
     return args.slice(1).reduce((acc, prev) => acc - prev, args[0])
   },
   mult: function () {
@@ -80,14 +78,14 @@ export const list = {
   },
   join: function () {
     const args = processList([...arguments])
-   
+
     if (args.length === undefined) return new Error('Join takes arguments!')
-    
+
     return args.reduce((acc, next) => acc.concat(next), [])
   },
   eval: function () {
     const args = [...arguments]
-    
+
     if (!args.length) return new Error('Eval takes one argument!')
 
     if (args[0] instanceof Symbol) {
@@ -97,7 +95,7 @@ export const list = {
     if (args[0] instanceof SExpression) {
       args[0] = args[0].run()
     }
-   
+
     if (args[0].length !== undefined && typeof args[0] !== 'string' && typeof args[0] !== 'function') {
       return SExpression.run(args[0])
     }
@@ -149,7 +147,7 @@ export const boolean = {
     const args = processList([...arguments])
 
     if (!args.length) return new Error('And function needs arguments')
-    return args.findIndex((val) => !val) == -1
+    return args.findIndex((val) => !val) === -1
   },
   or: function () {
     const args = processList([...arguments])
@@ -186,7 +184,7 @@ export const def = function () {
   if (args.length < 2) return new Error('You should pass at least two arguments')
 
   const symbols = (function () {
-    if (args[0] instanceof Symbol) return args[0].dry_value
+    if (args[0] instanceof Symbol) return args[0].dryValue
     if (args[0].constructor === SExpression) return args[0].run()
     return args[0]
   })()
@@ -200,25 +198,25 @@ export const def = function () {
     return new Error('First paramenter should be a SExpression')
   }
 
-  const env = values.length - symbols.length === 1?
-    values.pop() :
-    undefined
+  const env = values.length - symbols.length === 1
+    ? values.pop()
+    : undefined
 
   if (symbols.length !== values.length) {
     return new Error('You should pass equal number of symbols and values')
   }
 
   symbols.list.forEach((symbol, index) => {
-    const val = values[index].constructor === QExpression?
-      values[index] :
-      processElement(values[index])
-    console.log('def', symbol.name, val)
+    const val = values[index].constructor === QExpression
+      ? values[index]
+      : processElement(values[index])
+    // console.log('def', symbol.name, val)
     environment.set(symbol.name, val, env)
   })
 }
 
 export const global = function () {
-  console.log('global', arguments)
+  // console.log('global', arguments)
   def(...arguments, 'global')
 }
 
@@ -227,44 +225,44 @@ export const func = function () {
 
   if (args.length < 2) return new Error('You should pass at least two arguments')
 
-  const arg_list = args[0].constructor === SExpression? new QExpression(args[0].run()) : args[0],
-        body = args[1] instanceof Symbol? args[1].dry_value : args[1]
+  const argList = args[0].constructor === SExpression ? new QExpression(args[0].run()) : args[0]
+  const body = args[1] instanceof Symbol ? args[1].dryValue : args[1]
 
-  if (!(arg_list instanceof QExpression) || !(body instanceof SExpression)) {
-    console.log('arg_list', arg_list, 'body', body, args, environment.namespaces.get('global').get('curry'))
+  if (!(argList instanceof QExpression) || !(body instanceof SExpression)) {
+    // console.log('argList', argList, 'body', body, args, environment.namespaces.get('global').get('curry'))
     return new Error('Paramenters should be instance of SExpression')
   }
 
-  if (!arg_list.list.reduce((acc, next) => acc && next instanceof Symbol, true)) {
+  if (!argList.list.reduce((acc, next) => acc && next instanceof Symbol, true)) {
     return new Error('List of paramenters should be symbols')
   }
 
   // Check for dynamic arguments
-  const dyn_args = arg_list.list.filter((symbol) => symbol.name[0] === '&')
-  if (dyn_args.length > 1) {
+  const dynArgs = argList.list.filter((symbol) => symbol.name[0] === '&')
+  if (dynArgs.length > 1) {
     return new Error('Only one dynamic arguments name is allowed')
   }
-  if (dyn_args[0] && arg_list.list.indexOf(dyn_args[0]) !== arg_list.length - 1) {
+  if (dynArgs[0] && argList.list.indexOf(dynArgs[0]) !== argList.length - 1) {
     return new Error('Dynamic arguments name should be the last one')
   }
 
   const result = function () {
-    const extra_args = dyn_args[0],
-      funcArgs = [...arguments].map((arg) => arg instanceof Symbol? arg.value : arg)
+    const extraArgs = dynArgs[0]
+    const funcArgs = [...arguments].map((arg) => arg instanceof Symbol ? arg.value : arg)
 
-    if (funcArgs.length > arg_list.length && !extra_args) {
+    if (funcArgs.length > argList.length && !extraArgs) {
       return new Error('Passing too many arguments!')
     }
-    if (funcArgs.length < arg_list.length) {
+    if (funcArgs.length < argList.length) {
       return this.bind(this, ...funcArgs)
     }
-    if (extra_args) {
-      funcArgs[arg_list.length - 1] = new QExpression(funcArgs.slice(arg_list.length - 1))
+    if (extraArgs) {
+      funcArgs[argList.length - 1] = new QExpression(funcArgs.slice(argList.length - 1))
     }
 
     environment.addNamespace(body.toString())
 
-    arg_list.list.forEach((symbol, index) =>
+    argList.list.forEach((symbol, index) =>
       environment.set(symbol.name, funcArgs[index])
     )
 

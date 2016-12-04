@@ -18,6 +18,8 @@ const getResponse = (interpreter, input) => {
 }
 
 const main = (command, file, prompt) => {
+  const inputStream = file ? fs.createReadStream(file) : process.stdin
+  const rl = new Reader(inputStream)
   const interpreter = new Interpreter(prompt)
 
   if (command) {
@@ -26,36 +28,34 @@ const main = (command, file, prompt) => {
   }
 
   let done = false
-  const inputStream = file? fs.createReadStream(file) : process.stdin,
-    rl = new Reader(inputStream)
 
-  rl.on('close', _ => done = true)
+  rl.on('close', _ => { done = true })
   const read = function () {
-      return rl.ask(interpreter.prompt)
-        .then((input) => {
-          input = input.toString().trim()
-          if (!input) return read()
+    return rl.ask(interpreter.prompt)
+      .then((input) => {
+        input = input.toString().trim()
+        if (!input) return read()
 
-          input.split('\n').forEach((line) =>
-            console.log(getResponse(interpreter, line))
-          )
+        input.split('\n').forEach((line) =>
+          console.log(getResponse(interpreter, line))
+        )
 
-          if (!done) return read()
-        })
-        .catch((err) => {
-          console.log(err)
-          if (!done) return read()
-        })
-    }
+        if (!done) return read()
+      })
+      .catch((err) => {
+        console.log(err)
+        if (!done) return read()
+      })
+  }
 
   return read()
 }
 
 if (require.main === module) {
-  const argv = minimist(process.argv.slice(2)),
-    command = argv._[0],
-    file = argv.file || argv.f,
-    prompt = argv.prompt || argv.p
+  const argv = minimist(process.argv.slice(2))
+  const command = argv._[0]
+  const file = argv.file || argv.f
+  const prompt = argv.prompt || argv.p
   main(command, file, prompt)
     .catch((err) => console.log('An error happened!', err))
 }
