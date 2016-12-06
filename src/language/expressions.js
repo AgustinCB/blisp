@@ -54,4 +54,8 @@ export class QExpression extends SExpression {
   execute () {
     return SExpression.run(this.list)
   }
+
+  get length () {
+    return this.list.length
+  }
 }

@@ -183,7 +183,6 @@ export const def = function () {
 
   if (args.length < 2) return new Error('You should pass at least two arguments')
 
-  // console.log('def', args)
   const symbols = (function () {
     if (args[0] instanceof Symbol) return args[0].value
     if (args[0].constructor === SExpression) return args[0].run()
@@ -192,11 +191,12 @@ export const def = function () {
   const values = args.slice(1)
 
   if (symbols instanceof Symbol) {
-    return environment.set(symbols.name, values[0], values[1])
+    return def(new QExpression([ symbols ]), ...values)
+    //return environment.set(symbols.name, values[0], values[1])
   }
 
-  if (!(symbols instanceof SExpression)) {
-    return new Error('First paramenter should be a SExpression')
+  if (!(symbols instanceof QExpression)) {
+    return new Error('First paramenter should be a QExpression')
   }
 
   const env = values.length - symbols.length === 1
@@ -211,13 +211,11 @@ export const def = function () {
     const val = values[index].constructor === QExpression
       ? values[index]
       : processElement(true, values[index])
-    // console.log('def', symbol.name, val)
     environment.set(symbol.name, val, env)
   })
 }
 
 export const global = function () {
-  // console.log('global', arguments)
   def(...arguments, 'global')
 }
 
@@ -226,12 +224,10 @@ export const func = function () {
 
   if (args.length < 2) return new Error('You should pass at least two arguments')
 
-  console.log('prev', args, environment.namespaces.get('global'))
   const argList = args[0].constructor === SExpression ? new QExpression(args[0].run()) : args[0]
   const body = args[1] instanceof Symbol ? args[1].value : args[1]
 
   if (!(argList instanceof QExpression) || !(body instanceof QExpression)) {
-    // console.log('func', 'args', argList, 'body', body)
     throw new Error('Paramenters should be instance of QExpression')
   }
 
@@ -248,9 +244,7 @@ export const func = function () {
     throw new Error('Dynamic arguments name should be the last one')
   }
 
-  console.log('prev', 'body', body, 'argList', argList, environment.namespaces.get('global'))
   const result = function () {
-    console.log('next')
     const extraArgs = dynArgs[0]
     const funcArgs = [...arguments].map((arg) => arg instanceof Symbol ? arg.value : arg)
 
