@@ -37,7 +37,7 @@ export const builtins = parsec.Parser.operations(
 
 const booleans = grammar.keywords.false.or(grammar.keywords.true).trim()
 
-const symbol = grammar.symbol_name.then((symbolName) => {
+const symbol = grammar.symbolName.then((symbolName) => {
   return new Symbol(symbolName)
 })
 

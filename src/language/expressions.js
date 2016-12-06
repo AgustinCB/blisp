@@ -38,7 +38,7 @@ export class SExpression {
   }
 
   slice (from, to) {
-    return new this.constructor(this.list.slice(from, to))
+    return this.list.slice(from, to)
   }
 }
 
@@ -48,6 +48,10 @@ SExpression.run = function (list) {
 
 export class QExpression extends SExpression {
   run () {
-    return this.list
+    return this
+  }
+
+  execute () {
+    return SExpression.run(this.list)
   }
 }

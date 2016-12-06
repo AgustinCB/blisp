@@ -1,5 +1,7 @@
 'use strict'
 
+import {QExpression} from './language/expressions'
+
 const whitespaces = ' \n\t\v\f\r'
 
 /**
@@ -45,7 +47,7 @@ export const isSpace = (str) =>
 
 export const toArray = (value) => {
   if (value === undefined) return value
-  return value.constructor === Array
-    ? value
-    : [ value ]
+  if (value.constructor === Array) return value
+  if (value.constructor === QExpression) return value
+  return [ value ]
 }
