@@ -11,8 +11,6 @@ export default class Interpreter {
     if (typeof prompt !== 'string') prompt = ''
     this.prompt = '' + prompt
     this.history = []
-
-    this.loadStandardLib()
   }
 
   loadStandardLib () {
@@ -25,16 +23,17 @@ export default class Interpreter {
         this.interpret(codeLine)
       )
     }
+    const handleErr = (err) => console.log('Error: ', err)
 
     return promisify(fs.readdir, lib)
       .then((files) =>
         files
           .filter((file) => file.endsWith('.blisp'))
           .forEach((file) =>
-            readFile(file).then(loadCode).catch((err) => console.log(err))
+            readFile(file).then(loadCode).catch(handleErr)
           )
       )
-      .catch((err) => console.log(err))
+      .catch(handleErr)
   }
 
   parseError (res) {

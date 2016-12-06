@@ -226,10 +226,10 @@ export const func = function () {
 
   if (args.length < 2) return new Error('You should pass at least two arguments')
 
+  console.log('prev', args, environment.namespaces.get('global'))
   const argList = args[0].constructor === SExpression ? new QExpression(args[0].run()) : args[0]
   const body = args[1] instanceof Symbol ? args[1].value : args[1]
 
-  console.log('prev', 'body', body, 'args', argList, environment.namespaces.get('global').get('curry'))
   if (!(argList instanceof QExpression) || !(body instanceof QExpression)) {
     // console.log('func', 'args', argList, 'body', body)
     throw new Error('Paramenters should be instance of QExpression')
@@ -248,6 +248,7 @@ export const func = function () {
     throw new Error('Dynamic arguments name should be the last one')
   }
 
+  console.log('prev', 'body', body, 'argList', argList, environment.namespaces.get('global'))
   const result = function () {
     console.log('next')
     const extraArgs = dynArgs[0]

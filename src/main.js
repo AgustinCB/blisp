@@ -23,8 +23,8 @@ const main = (command, file, prompt) => {
   const interpreter = new Interpreter(prompt)
 
   if (command) {
-    console.log(getResponse(interpreter, command))
-    return Promise.resolve()
+    return interpreter.loadStandardLib()
+      .then(() => console.log(getResponse(interpreter, command)))
   }
 
   let done = false
@@ -48,7 +48,7 @@ const main = (command, file, prompt) => {
       })
   }
 
-  return read()
+  return interpreter.loadStandardLib().then(() => read())
 }
 
 if (require.main === module) {
