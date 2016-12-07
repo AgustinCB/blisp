@@ -33,7 +33,7 @@ export const def = function () {
     throw new Error('You should pass equal number of symbols and values')
   }
 
-  symbols.list.forEach((symbol, index) => {
+  symbols.forEach((symbol, index) => {
     environment.set(symbol.name, executeElement(values[index]), env)
   })
 }
@@ -45,7 +45,7 @@ export const global = function () {
 export const func = function () {
   const args = [...arguments]
 
-  if (args.length < 2) throw new Error('You should pass at least two arguments')
+  if (args.length < 2) throw new Error('You should pass two arguments')
 
   const argList = args[0].constructor === SExpression ? new QExpression(args[0].run()) : args[0]
   const body = args[1] instanceof Symbol ? args[1].value : args[1]
@@ -54,21 +54,14 @@ export const func = function () {
     throw new Error('Paramenters should be instance of QExpression')
   }
 
-  if (!argList.list.reduce((acc, next) => acc && next instanceof Symbol, true)) {
+  if (!argList.reduce((acc, next) => acc && next instanceof Symbol, true)) {
     throw new Error('List of paramenters should be symbols')
   }
 
   // Check for dynamic arguments
-  const dynArgs = argList.list.filter((symbol) => symbol.name[0] === '&')
-  if (dynArgs.length > 1) {
-    throw new Error('Only one dynamic arguments name is allowed')
-  }
-  if (dynArgs[0] && argList.list.indexOf(dynArgs[0]) !== argList.length - 1) {
-    throw new Error('Dynamic arguments name should be the last one')
-  }
+  const extraArgs = argList.last.name[0] === '&' ? argList.last : false
 
   const result = function () {
-    const extraArgs = dynArgs[0]
     const funcArgs = [...arguments].map((arg) => arg instanceof Symbol ? arg.value : arg)
 
     if (funcArgs.length > argList.length && !extraArgs) {
@@ -83,7 +76,7 @@ export const func = function () {
 
     environment.addNamespace(body.toString())
 
-    argList.list.forEach((symbol, index) =>
+    argList.forEach((symbol, index) =>
       environment.set(symbol.name, funcArgs[index])
     )
 

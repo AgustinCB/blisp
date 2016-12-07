@@ -14,15 +14,20 @@ export class SExpression {
     }
 
     if (typeof lead === 'function') {
-      return lead(...this.list.slice(1))
+      return lead(...this.slice(1))
     }
 
     if (!this.list || !this.list.constructor === Array) return toArray(this.list)
-    return this.list.map((v) => v instanceof Symbol ? v.value : v)
+    return this.map((v) => v instanceof Symbol ? v.value : v)
   }
 
   execute () {
     return this.run()
+  }
+
+  get last () {
+    if (!this.list.length) return undefined
+    return this.list[this.list.length-1]
   }
 
   get length () {
@@ -57,9 +62,5 @@ export class QExpression extends SExpression {
 
   execute () {
     return SExpression.run(this.list)
-  }
-
-  get length () {
-    return this.list.length
   }
 }
