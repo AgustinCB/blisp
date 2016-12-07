@@ -30,7 +30,6 @@ export const def = function () {
     : undefined
 
   if (symbols.length !== values.length) {
-    console.log(symbols, values)
     throw new Error('You should pass equal number of symbols and values')
   }
 
