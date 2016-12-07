@@ -34,8 +34,7 @@ export const def = function () {
   }
 
   symbols.list.forEach((symbol, index) => {
-    const val = executeElement(values[index])
-    environment.set(symbol.name, val, env)
+    environment.set(symbol.name, executeElement(values[index]), env)
   })
 }
 
