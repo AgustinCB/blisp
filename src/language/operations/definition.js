@@ -1,6 +1,6 @@
 'use strict'
 
-import {processElement} from './util'
+import {executeElement} from './util'
 import {SExpression, QExpression} from '../expressions'
 import Symbol from '../symbol'
 import environment from '../environment'
@@ -34,7 +34,7 @@ export const def = function () {
   }
 
   symbols.list.forEach((symbol, index) => {
-    const val = processElement(true, values[index])
+    const val = executeElement(values[index])
     environment.set(symbol.name, val, env)
   })
 }
