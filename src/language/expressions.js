@@ -21,6 +21,10 @@ export class SExpression {
     return this.list.map((v) => v instanceof Symbol ? v.value : v)
   }
 
+  execute () {
+    return this.run()
+  }
+
   get length () {
     return this.list.length
   }
