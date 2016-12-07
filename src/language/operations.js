@@ -192,7 +192,6 @@ export const def = function () {
 
   if (symbols instanceof Symbol) {
     return def(new QExpression([ symbols ]), ...values)
-    //return environment.set(symbols.name, values[0], values[1])
   }
 
   if (!(symbols instanceof QExpression)) {
