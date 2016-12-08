@@ -2,7 +2,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import * as lang from './language'
+import {statment} from './language'
 import {promisify} from './util'
 
 export default class Interpreter {
@@ -46,7 +46,7 @@ export default class Interpreter {
   }
 
   interpret (input) {
-    const res = lang.statment.parse(input)
+    const res = statment.parse(input)
 
     this.parseError(res)
 

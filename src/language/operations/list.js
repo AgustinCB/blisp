@@ -1,7 +1,7 @@
 'use strict'
 
 import {processList, executeElement} from './util'
-import {SExpression, QExpression} from '../expressions'
+import {SExpression} from '../expressions'
 
 export const list = function () {
   return processList([...arguments])

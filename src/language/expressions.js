@@ -27,7 +27,7 @@ export class SExpression {
 
   get last () {
     if (!this.list.length) return undefined
-    return this.list[this.list.length-1]
+    return this.list[this.list.length - 1]
   }
 
   get length () {

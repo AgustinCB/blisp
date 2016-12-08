@@ -6,7 +6,7 @@ import * as grammar from './grammar'
 import Symbol from './symbol'
 import {SExpression, QExpression} from './expressions'
 
-export const builtins = parsec.Parser.operations(
+const builtins = parsec.Parser.operations(
   [ grammar.chars.plus, operations.number.plus ],
   [ grammar.chars.minus, operations.number.rest ],
   [ grammar.chars.times, operations.number.mult ],
@@ -22,12 +22,12 @@ export const builtins = parsec.Parser.operations(
   [ grammar.keywords.func, operations.definition.func ],
   [ grammar.keywords.def, operations.definition.def ],
   [ grammar.keywords.global, operations.definition.global ],
-  [ grammar.keywords.equals, operations.comparison.equals ],
-  [ grammar.keywords.notEquals, operations.comparison.notEquals ],
   [ grammar.keywords.greaterThan, operations.comparison.graterThan ],
   [ grammar.keywords.lesserThan, operations.comparison.lesserThan ],
   [ grammar.keywords.greaterOrEqualsThan, operations.comparison.graterOrEqualsThan ],
   [ grammar.keywords.lesserOrEqualsThan, operations.comparison.lesserOrEqualsThan ],
+  [ grammar.keywords.equals, operations.comparison.equals ],
+  [ grammar.keywords.notEquals, operations.comparison.notEquals ],
   [ grammar.keywords.and, operations.logical.and ],
   [ grammar.keywords.or, operations.logical.or ],
   [ grammar.keywords.not, operations.logical.not ],

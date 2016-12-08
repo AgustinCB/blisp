@@ -7,8 +7,8 @@ export const ifcond = function () {
 
   if (args.length < 2) throw new Error('Conditions needs at least two arguments')
 
-  if (processElement(true, args[0])) return args[1].run()
-  else if (args[2]) return args[2].run()
+  if (processElement(true, args[0])) return args[1].run ? args[1].run() : args[1]
+  else if (args[2]) return args[2].run ? args[2].run() : args[2]
 }
 
 export const unless = function () {
