@@ -22,9 +22,9 @@ const builtins = parsec.Parser.operations(
   [ grammar.keywords.func, operations.definition.func ],
   [ grammar.keywords.def, operations.definition.def ],
   [ grammar.keywords.global, operations.definition.global ],
-  [ grammar.keywords.greaterThan, operations.comparison.graterThan ],
+  [ grammar.keywords.greaterThan, operations.comparison.greaterThan ],
   [ grammar.keywords.lesserThan, operations.comparison.lesserThan ],
-  [ grammar.keywords.greaterOrEqualsThan, operations.comparison.graterOrEqualsThan ],
+  [ grammar.keywords.greaterOrEqualsThan, operations.comparison.greaterOrEqualsThan ],
   [ grammar.keywords.lesserOrEqualsThan, operations.comparison.lesserOrEqualsThan ],
   [ grammar.keywords.equals, operations.comparison.equals ],
   [ grammar.keywords.notEquals, operations.comparison.notEquals ],
@@ -37,9 +37,7 @@ const builtins = parsec.Parser.operations(
 
 const booleans = grammar.keywords.false.or(grammar.keywords.true).trim()
 
-const symbol = grammar.symbolName.then((symbolName) => {
-  return new Symbol(symbolName)
-})
+const symbol = grammar.symbolName.then((symbolName) => new Symbol(symbolName))
 
 const factor = parsec.lazy(() =>
   parsec.int.or(list, unevaluatedStatment)
