@@ -87,3 +87,10 @@ export const func = function () {
   }
   return result.bind(result)
 }
+
+export const partial = function () {
+  const args = [...arguments]
+
+  if (args[0].constructor !== Function) throw new Error('Partial should take a function')
+  return args[0].bind(...args)
+}

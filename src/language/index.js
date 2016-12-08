@@ -20,6 +20,7 @@ const builtins = parsec.Parser.operations(
   [ grammar.keywords.eval, operations.list.evaluate ],
   [ grammar.keywords.length, operations.list.length ],
   [ grammar.keywords.func, operations.definition.func ],
+  [ grammar.keywords.partial, operations.definition.partial ],
   [ grammar.keywords.def, operations.definition.def ],
   [ grammar.keywords.global, operations.definition.global ],
   [ grammar.keywords.greaterThan, operations.comparison.greaterThan ],

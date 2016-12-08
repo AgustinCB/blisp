@@ -44,5 +44,6 @@ export const keywords = {
   unless: parsec.item.startsWith('unless').then(parsec.space.many()),
   'false': parsec.item.startsWith('false').trim().then(false),
   'true': parsec.item.startsWith('true').trim().then(true),
-  func: parsec.item.startsWith('#').then(parsec.space.many())
+  func: parsec.item.startsWith('#').then(parsec.space.many()),
+  partial: parsec.item.startsWith('partial').then(parsec.space.many())
 }
