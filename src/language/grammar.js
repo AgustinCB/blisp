@@ -2,6 +2,7 @@
 
 import * as parsec from 'happy-parser'
 import Symbol from './symbol'
+import Comment from './comment'
 
 export const symbolName = parsec.letter.or(parsec.symbol, parsec.int).satisfy((c) =>
   c !== '(' && c !== ')' && c !== '"' && c !== '\''
@@ -60,3 +61,8 @@ const symbol = symbolName.then((symbolName) => new Symbol(symbolName))
 export const types = {
   string, boolean, symbol
 }
+
+export const comment = parsec
+                        .satisfy((first) => first === ';')
+                        .then(parsec.item.manyOrNone())
+                        .then(comment => new Comment(comment))

@@ -52,4 +52,4 @@ const list = parsec.lazy(() =>
 const unevaluatedStatment = parsec.lazy(() => grammar.chars.singleQuote.then(list).then((sexp) => new QExpression(sexp.list)))
 const evaluatedStatment = list.then((expr) => expr.run()).or(unevaluatedStatment)
 
-export const statment = evaluatedStatment
+export const statment = evaluatedStatment.or(grammar.comment)

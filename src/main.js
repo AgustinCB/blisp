@@ -37,7 +37,7 @@ const main = (command, file, prompt) => {
         if (!input) return read()
 
         input.split('\n').forEach((line) =>
-          console.log(getResponse(interpreter, line))
+          console.log(getResponse(interpreter, line).toString())
         )
 
         if (!done) return read()
