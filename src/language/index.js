@@ -36,11 +36,11 @@ const builtins = parsec.Parser.operations(
 ).trim()
 
 const factor = parsec.lazy(() =>
-  parsec.int.or(list, unevaluatedStatment)
+  list.or(unevaluatedStatment)
 )
 
 const list = parsec.lazy(() =>
-  builtins.or(grammar.types.boolean, grammar.types.symbol, grammar.types.string, factor).trim().many(Array)
+  builtins.or(grammar.types.boolean, grammar.types.symbol, grammar.types.string, parsec.int, factor).trim().many(Array)
   .between(...grammar.chars.parenthesis).then((elements) => new SExpression(elements))
 ).trim()
 
