@@ -8,7 +8,7 @@ export default class {
     this.content = content
   }
 
-  toString() {
+  toString () {
     return FORMAT + this.content + NORMAL
   }
 }
