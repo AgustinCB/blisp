@@ -34,7 +34,7 @@
     "standard": "^7.1.2"
   },
   "dependencies": {
-    "happy-parser": "^1.0.12",
+    "happy-parser": "^1.0.14",
     "minimist": "^1.2.0",
     "readline-promise": "0.0.1"
   }

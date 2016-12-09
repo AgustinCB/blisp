@@ -1,9 +1,10 @@
 'use strict'
 
 import * as parsec from 'happy-parser'
+import Symbol from './symbol'
 
 export const symbolName = parsec.letter.or(parsec.symbol, parsec.int).satisfy((c) =>
-  c !== '(' && c !== ')' && c !== '\''
+  c !== '(' && c !== ')' && c !== '"' && c !== '\''
 ).many().satisfy((c) =>
   !c.split('').reduce((acc, v) => acc && !isNaN(parseInt(v)), true)
 ).trim()
@@ -13,6 +14,7 @@ export const chars = {
     parsec.char('('),
     parsec.char(')')
   ],
+  doubleQuote: parsec.char('"'),
   singleQuote: parsec.char("'"),
   plus: parsec.char('+'),
   minus: parsec.char('-'),
@@ -46,4 +48,15 @@ export const keywords = {
   'true': parsec.item.startsWith('true').trim().then(true),
   func: parsec.item.startsWith('#').then(parsec.space.many()),
   partial: parsec.item.startsWith('partial').then(parsec.space.many())
+}
+
+const stringLiteral = parsec.satisfy((letter) => letter !== '"').many()
+const string = stringLiteral.between(chars.doubleQuote).trim()
+
+const boolean = keywords.false.or(keywords.true).trim()
+
+const symbol = symbolName.then((symbolName) => new Symbol(symbolName))
+
+export const types = {
+  string, boolean, symbol
 }

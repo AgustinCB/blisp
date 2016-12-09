@@ -20,6 +20,5 @@ export const processList = (list) => {
   if (list instanceof SExpression) {
     list = list.run()
   }
-  list = toArray(list)
-  return list.map(processElement.bind(null, !(list instanceof QExpression)))
+  return toArray(list).map(processElement.bind(null, !(list instanceof QExpression)))
 }

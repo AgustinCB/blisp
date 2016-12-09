@@ -3,7 +3,6 @@
 import * as parsec from 'happy-parser'
 import * as operations from './operations'
 import * as grammar from './grammar'
-import Symbol from './symbol'
 import {SExpression, QExpression} from './expressions'
 
 const builtins = parsec.Parser.operations(
@@ -36,16 +35,12 @@ const builtins = parsec.Parser.operations(
   [ grammar.keywords.unless, operations.conditional.unless ]
 ).trim()
 
-const booleans = grammar.keywords.false.or(grammar.keywords.true).trim()
-
-const symbol = grammar.symbolName.then((symbolName) => new Symbol(symbolName))
-
 const factor = parsec.lazy(() =>
   parsec.int.or(list, unevaluatedStatment)
 )
 
 const list = parsec.lazy(() =>
-  builtins.or(booleans, symbol, factor).trim().many()
+  builtins.or(grammar.types.boolean, grammar.types.symbol, grammar.types.string, factor).trim().many(Array)
   .between(...grammar.chars.parenthesis).then((elements) => new SExpression(elements))
 ).trim()
 
