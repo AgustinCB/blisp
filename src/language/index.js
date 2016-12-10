@@ -5,6 +5,8 @@ import * as operations from './operations'
 import * as grammar from './grammar'
 import {SExpression, QExpression} from './expressions'
 
+export const statment = parsec.lazy(() => evaluatedStatment.or(grammar.comment))
+
 const builtins = parsec.Parser.operations(
   [ grammar.chars.plus, operations.number.plus ],
   [ grammar.chars.minus, operations.number.rest ],
@@ -22,6 +24,9 @@ const builtins = parsec.Parser.operations(
   [ grammar.keywords.partial, operations.definition.partial ],
   [ grammar.keywords.def, operations.definition.def ],
   [ grammar.keywords.global, operations.definition.global ],
+  [ grammar.keywords.print, operations.io.print ],
+  [ grammar.keywords.error, operations.io.error ],
+  [ grammar.keywords.load, operations.io.load.bind(operations.io.load, statment) ],
   [ grammar.keywords.greaterThan, operations.comparison.greaterThan ],
   [ grammar.keywords.lesserThan, operations.comparison.lesserThan ],
   [ grammar.keywords.greaterOrEqualsThan, operations.comparison.greaterOrEqualsThan ],
@@ -51,5 +56,3 @@ const list = parsec.lazy(() =>
 
 const unevaluatedStatment = parsec.lazy(() => grammar.chars.singleQuote.then(list).then((sexp) => new QExpression(sexp.list)))
 const evaluatedStatment = list.then((expr) => expr.run()).or(unevaluatedStatment)
-
-export const statment = evaluatedStatment.or(grammar.comment)
