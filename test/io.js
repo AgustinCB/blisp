@@ -19,7 +19,7 @@ describe('#io', function() {
     }
   })
 
-  it.only('should load', function () {
+  it('should load', function () {
     statment.parse(`(load "${__dirname}/test.blisp")`)
     statment.parse('(eval the-answer)').get().should.equal(42)
   })

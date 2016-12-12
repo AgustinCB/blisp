@@ -14,15 +14,7 @@ export default class Interpreter {
   }
 
   loadStandardLib () {
-    const lib = './src/language/stdlib'
-    const readFile = (file) => {
-      return promisify(fs.readFile, path.join(lib, file))
-    }
-    const loadCode = (code) => {
-      code.toString().split('\n').forEach((codeLine) =>
-        this.interpret(codeLine)
-      )
-    }
+    const lib = path.join(__dirname, '../src/language/stdlib')
     const handleErr = (err) => console.log('Error: ', err)
 
     return promisify(fs.readdir, lib)
@@ -30,7 +22,7 @@ export default class Interpreter {
         files
           .filter((file) => file.endsWith('.blisp'))
           .forEach((file) =>
-            readFile(file).then(loadCode).catch(handleErr)
+            this.interpret(`(load "${path.join(lib, file)}")`)
           )
       )
       .catch(handleErr)
