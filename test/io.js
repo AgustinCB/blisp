@@ -18,4 +18,9 @@ describe('#io', function() {
       e.toString().should.equal('Error: holaaaa')
     }
   })
+
+  it.only('should load', function () {
+    statment.parse(`(load "${__dirname}/test.blisp")`)
+    statment.parse('(eval the-answer)').get().should.equal(42)
+  })
 })

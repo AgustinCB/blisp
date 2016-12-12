@@ -1,6 +1,6 @@
 'use strict'
 
-// import fs from 'fs'
+import fs from 'fs'
 
 export const print = function () {
   console.log(...arguments)
@@ -15,5 +15,8 @@ export const load = function () {
   const statment = args[0]
   const files = args.slice(1)
 
-  console.log(statment, files, args)
+  files.forEach((file) => {
+    const content = fs.readFileSync(file).toString()
+    content.split('\n').forEach(statment.parse.bind(statment))
+  })
 }
