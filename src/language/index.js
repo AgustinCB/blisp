@@ -40,19 +40,18 @@ const builtins = parsec.Parser.operations(
   [ grammar.keywords.unless, operations.conditional.unless ]
 ).trim()
 
-const factor = parsec.lazy(() =>
+const factors = parsec.lazy(() =>
   builtins.or(
     grammar.types.boolean, grammar.types.symbol,
     grammar.types.string, parsec.int, list, unevaluatedStatment
-  ).trim()
+  ).trim().many(Array)
 )
 
-const list = parsec.lazy(() =>
-  factor
-    .many(Array)
+const list =
+  factors
     .between(...grammar.chars.parenthesis)
     .then((elements) => new SExpression(elements))
-).trim()
+    .trim()
 
-const unevaluatedStatment = parsec.lazy(() => grammar.chars.singleQuote.then(list).then((sexp) => new QExpression(sexp.list)))
+const unevaluatedStatment = grammar.chars.singleQuote.then(list).then((sexp) => new QExpression(sexp.list))
 const evaluatedStatment = list.then((expr) => expr.run()).or(unevaluatedStatment)

@@ -40,6 +40,7 @@ export default class Interpreter {
   interpret (input) {
     const res = statment.parse(input)
 
+    console.log('pepepe', res)
     this.parseError(res)
 
     return res
