@@ -5,7 +5,7 @@ import * as operations from './operations'
 import * as grammar from './grammar'
 import {SExpression, QExpression} from './expressions'
 
-export const statment = parsec.lazy(() => evaluatedStatment.or(grammar.comment))
+export const statment = parsec.lazy(() => evaluatedStatment.or(unevaluatedStatment, grammar.comment)).then((expression) => expression.run())
 
 const builtins = parsec.Parser.operations(
   [ grammar.chars.plus, operations.number.plus ],
@@ -40,18 +40,14 @@ const builtins = parsec.Parser.operations(
   [ grammar.keywords.unless, operations.conditional.unless ]
 ).trim()
 
-const factors = parsec.lazy(() =>
-  builtins.or(
+const list = parsec.lazy(function () {
+  return builtins.or(
     grammar.types.boolean, grammar.types.symbol,
-    grammar.types.string, parsec.int, list, unevaluatedStatment
-  ).trim().many(Array)
-)
-
-const list =
-  factors
+    grammar.types.string, parsec.int, unevaluatedStatment, evaluatedStatment
+  ).trim()
+    .many(Array)
     .between(...grammar.chars.parenthesis)
-    .then((elements) => new SExpression(elements))
-    .trim()
+})
 
-const unevaluatedStatment = grammar.chars.singleQuote.then(list).then((sexp) => new QExpression(sexp.list))
-const evaluatedStatment = list.then((expr) => expr.run()).or(unevaluatedStatment)
+const unevaluatedStatment = grammar.chars.singleQuote.then(list).then((elements) => new QExpression(elements))
+const evaluatedStatment = list.then((elements) => new SExpression(elements))

@@ -17,7 +17,6 @@ describe('#definition', function () {
   })
 
   it('should be able to define a function', function () {
-    console.log(statment.parse('((# \'(x y) \'(+ x y)) 1 2)'))
     statment.parse('((# \'(x y) \'(+ x y)) 1 2)').get().should.deep.equal(3)
   })
 

@@ -15,6 +15,6 @@ describe('#interpret', function() {
   it('should handle syntax errors', function () {
     const interpreter = new Interpreter()
 
-    console.log(interpreter.interpret('(eval 4'))
+    console.log('asdasd', interpreter.interpret('(eval 4'))
   })
 })

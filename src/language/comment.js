@@ -8,6 +8,10 @@ export default class {
     this.content = content
   }
 
+  run () {
+    return this
+  }
+
   toString () {
     return FORMAT + this.content + NORMAL
   }
