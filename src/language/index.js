@@ -40,7 +40,7 @@ const builtins = parsec.Parser.operations(
   [ grammar.keywords.unless, operations.conditional.unless ]
 ).trim()
 
-const list = parsec.lazy(function () {
+const list = parsec.lazy(() => {
   return builtins.or(
     grammar.types.boolean, grammar.types.symbol,
     grammar.types.string, parsec.int, unevaluatedStatment, evaluatedStatment

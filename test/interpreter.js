@@ -15,6 +15,11 @@ describe('#interpret', function() {
   it('should handle syntax errors', function () {
     const interpreter = new Interpreter()
 
-    console.log('asdasd', interpreter.interpret('(eval 4'))
+    try {
+      const res = interpreter.interpret('(eval 4) asd')
+      res.should.not.exist
+    } catch (e) {
+      e.toString().should.equal('Error: Unexpected input (col 8): " asd"')
+    }
   })
 })

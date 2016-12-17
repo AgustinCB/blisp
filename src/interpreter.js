@@ -28,8 +28,7 @@ export default class Interpreter {
       .catch(handleErr)
   }
 
-  parseError (res) {
-    const input = res.input
+  parseError (res, input) {
     if (res.unconsumedStrings && res.unconsumedStrings[0]) {
       throw new Error(
         `Unexpected input (col ${input.indexOf(res.unconsumedStrings[0])}): "${res.unconsumedStrings[0]}"`
@@ -40,8 +39,7 @@ export default class Interpreter {
   interpret (input) {
     const res = statment.parse(input)
 
-    console.log('pepepe', res)
-    this.parseError(res)
+    this.parseError(res, input)
 
     return res
   }
