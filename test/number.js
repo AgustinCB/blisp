@@ -25,4 +25,9 @@ describe('#number', function() {
     const res = statment.parse('(/ 10 2 1)')
     res.get().should.equal(5)
   })
+
+  it('should handle float', function () {
+    const res = statment.parse('(/ 5 2.5 1)')
+    res.get().should.equal(2)
+  })
 })

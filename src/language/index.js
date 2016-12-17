@@ -5,7 +5,9 @@ import * as operations from './operations'
 import * as grammar from './grammar'
 import {SExpression, QExpression} from './expressions'
 
-export const statment = parsec.lazy(() => evaluatedStatment.or(unevaluatedStatment, grammar.comment)).then((expression) => expression.run())
+export const statment = parsec.lazy(() =>
+  evaluatedStatment.or(unevaluatedStatment, grammar.comment)
+).then((expression) => expression.run())
 
 const builtins = parsec.Parser.operations(
   [ grammar.chars.plus, operations.number.plus ],
@@ -43,7 +45,8 @@ const builtins = parsec.Parser.operations(
 const list = parsec.lazy(() => {
   return builtins.or(
     grammar.types.boolean, grammar.types.symbol,
-    grammar.types.string, parsec.int, unevaluatedStatment, evaluatedStatment
+    grammar.types.string, grammar.types.float, parsec.int,
+    unevaluatedStatment, evaluatedStatment
   ).trim()
     .many(Array)
     .between(...grammar.chars.parenthesis)
