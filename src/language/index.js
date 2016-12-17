@@ -44,7 +44,7 @@ const builtins = parsec.Parser.operations(
 
 const list = parsec.lazy(() => {
   return builtins.or(
-    grammar.types.boolean, grammar.types.symbol,
+    grammar.types.boolean, grammar.keywords.nil, grammar.types.symbol,
     grammar.types.string, grammar.types.float, parsec.int,
     unevaluatedStatment, evaluatedStatment
   ).trim()
