@@ -42,15 +42,15 @@ const builtins = parsec.Parser.operations(
   [ grammar.keywords.unless, operations.conditional.unless ]
 ).trim()
 
-const list = parsec.lazy(() => {
-  return builtins.or(
+const lazyList = parsec.lazy(() => list)
+
+const unevaluatedStatment = grammar.chars.singleQuote.then(lazyList).then((elements) => new QExpression(elements))
+const evaluatedStatment = lazyList.then((elements) => new SExpression(elements))
+
+const list = builtins.or(
     grammar.types.boolean, grammar.keywords.nil, grammar.types.symbol,
     grammar.types.string, grammar.types.float, parsec.int,
     unevaluatedStatment, evaluatedStatment
   ).trim()
-    .many(Array)
-    .between(...grammar.chars.parenthesis)
-})
-
-const unevaluatedStatment = grammar.chars.singleQuote.then(list).then((elements) => new QExpression(elements))
-const evaluatedStatment = list.then((elements) => new SExpression(elements))
+  .many(Array)
+  .between(...grammar.chars.parenthesis)
