@@ -4,7 +4,9 @@
   "description": "LISP language that compiles to javascript",
   "main": "./lib/main",
   "scripts": {
-    "test": "chmod +x test.sh; ./test.sh",
+    "lint": "./node_modules/standard/bin/cmd.js 'src/**/*.js'",
+    "mocha": "./node_modules/mocha/bin/mocha --require babel-core/register -R spec",
+    "test": "nodemon --exec 'npm run lint && npm run mocha'",
     "gendoc": "./node_modules/jsdox/bin/jsdox --output docs src",
     "build": "./node_modules/babel-cli/bin/babel.js src --presets babel-preset-es2015 --out-dir lib",
     "repl": "node ./lib/main"
@@ -31,6 +33,7 @@
     "chai": "^3.5.0",
     "jsdox": "^0.4.10",
     "mocha": "^2.5.3",
+    "nodemon": "^1.11.0",
     "standard": "^7.1.2"
   },
   "dependencies": {
