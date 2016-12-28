@@ -17,6 +17,7 @@ export const load = function () {
 
   files.forEach((file) => {
     const content = fs.readFileSync(file).toString()
-    content.split('\n').forEach(statment.parse.bind(statment))
+    statment.many().parse(content)
+    // content.split('\n').forEach(statment.parse.bind(statment))
   })
 }

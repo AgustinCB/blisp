@@ -19,8 +19,15 @@ describe('#io', function() {
     }
   })
 
-  it('should load', function () {
-    statment.parse(`(load "${__dirname}/test.blisp")`)
-    statment.parse('(eval the-answer)').get().should.equal(42)
+  describe('#load', function () {
+    it('should load', function () {
+      statment.parse(`(load "${__dirname}/test.blisp")`)
+      statment.parse('(eval the-answer)').get().should.equal(42)
+    })
+
+    it('should load with multiline', function () {
+      statment.parse(`(load "${__dirname}/test_multiline.blisp")`)
+      statment.parse('(eval the-new-answer)').get().should.equal(42)
+    })
   })
 })
