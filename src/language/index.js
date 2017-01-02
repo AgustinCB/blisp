@@ -22,6 +22,7 @@ const builtins = parsec.Parser.operations(
   [ grammar.chars.minus, operations.number.rest ],
   [ grammar.chars.times, operations.number.mult ],
   [ grammar.chars.slash, operations.number.div ],
+  [ grammar.keywords.filter, operations.list.filter ],
   [ grammar.keywords.map, operations.list.map ],
   [ grammar.keywords.foreach, operations.list.foreach ],
   [ grammar.keywords.reduce, operations.list.reduce ],

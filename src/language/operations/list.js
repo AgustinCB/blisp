@@ -3,6 +3,20 @@
 import {processList, executeElement} from './util'
 import {SExpression} from '../expressions'
 
+export const filter = function () {
+  const [ func, list ] = processList([...arguments])
+
+  if (func.constructor !== Function) {
+    throw new Error('First argument should be a function')
+  }
+
+  if (list.constructor !== Array) {
+    throw new Error('Second argument should be a list')
+  }
+
+  return list.filter(func)
+}
+
 export const map = function () {
   const [ func, list ] = processList([...arguments])
 

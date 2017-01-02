@@ -4,6 +4,10 @@ import {statment} from '../lib/language'
 const should = chai.should()
 
 describe('#list', function() {
+  it('should filter a list', function () {
+    statment.parse("(filter (# '(x) '(= 1 x)) (list 1 2))").get().should.deep.equal([ 1 ])
+  })
+
   it('should map a list', function () {
     statment.parse("(map (# '(x) '(+ 1 x)) (list 1 2))").get().should.deep.equal([ 2, 3 ])
   })

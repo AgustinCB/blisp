@@ -1,7 +1,9 @@
 'use strict'
 
+import {processList} from './util'
+
 const boolOp = function (condition) {
-  const args = [...arguments].slice(1)
+  const args = processList([...arguments].slice(1))
 
   if (!args.length) throw new Error('Equals function needs arguments')
   for (const i in args) {

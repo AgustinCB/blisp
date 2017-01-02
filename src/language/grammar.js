@@ -26,6 +26,7 @@ export const chars = {
 }
 
 export const keywords = {
+  filter: parsec.item.startsWith('filter').then(parsec.space.many()),
   map: parsec.item.startsWith('map').then(parsec.space.many()),
   foreach: parsec.item.startsWith('foreach').then(parsec.space.many()),
   reduce: parsec.item.startsWith('reduce').then(parsec.space.many()),
