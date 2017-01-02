@@ -18,6 +18,13 @@ describe('#mix', function () {
     statment.parse('(ref 1 2 3)').get().should.deep.equal([ 1, 2, 3 ])
   })
 
+  it('should be able to force evaluation', function () {
+    statment.parse('(def \'(x) (+ 1 2))').get().should.equal('')
+
+    statment.parse('`x').get().should.equal(3)
+    statment.parse('(+ 1 `x)').get().should.equal(4)
+  })
+
   it('should be able to handle array of symbols', function () {
     statment.parse('(def \'(arglist) \'(a b x y))').get().should.equal('')
 

@@ -20,6 +20,29 @@ export default class Reader extends EventEmitter {
       .then(() => { this.completed = true })
   }
 
+  parse (input) {
+    const paren = []
+    const statements = []
+    let lastStatement = 0
+
+    input.split('').forEach((c, index) => {
+      if (c === '(') {
+        return paren.push(c)
+      }
+      if (c === ')') {
+        paren.pop()
+        if (paren.length === 0) {
+          statements.push(input.substr(lastStatement, index))
+          lastStatement = index
+        }
+      }
+    })
+    if (paren.length > 0) {
+      this.newError(new Error('Invalid syntax!'))
+    }
+    return statements
+  }
+
   ask (question) {
     if (question) this.output.write(question)
     return new Promise((resolve, reject) => {

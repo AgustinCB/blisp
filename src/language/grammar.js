@@ -5,7 +5,7 @@ import Symbol from './symbol'
 import Comment from './comment'
 
 export const symbolName = parsec.letter.or(parsec.symbol, parsec.digit).satisfy((c) =>
-  c !== '(' && c !== ')' && c !== '"' && c !== '\''
+  c !== '(' && c !== ')' && c !== '"' && c !== '\'' && c !== '`'
 ).many().satisfy((c) =>
   !c.split('').reduce((acc, v) => acc && !isNaN(parseInt(v)), true) && isNaN(parseFloat(c))
 ).trim()
@@ -21,7 +21,8 @@ export const chars = {
   plus: parsec.char('+'),
   minus: parsec.char('-'),
   times: parsec.char('*'),
-  slash: parsec.char('/')
+  slash: parsec.char('/'),
+  graveAccent: parsec.char('`')
 }
 
 export const keywords = {
