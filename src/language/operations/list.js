@@ -3,6 +3,48 @@
 import {processList, executeElement} from './util'
 import {SExpression} from '../expressions'
 
+export const map = function () {
+  const [ func, list ] = processList([...arguments])
+
+  if (func.constructor !== Function) {
+    throw new Error('First argument should be a function')
+  }
+
+  if (list.constructor !== Array) {
+    throw new Error('Second argument should be a list')
+  }
+
+  return list.map(func)
+}
+
+export const foreach = function () {
+  const [ func, list ] = processList([...arguments])
+
+  if (func.constructor !== Function) {
+    throw new Error('First argument should be a function')
+  }
+
+  if (list.constructor !== Array) {
+    throw new Error('Second argument should be a list')
+  }
+
+  return list.forEach(func)
+}
+
+export const reduce = function () {
+  const [ func, list, init ] = processList([...arguments])
+
+  if (func.constructor !== Function) {
+    throw new Error('First argument should be a function')
+  }
+
+  if (list.constructor !== Array) {
+    throw new Error('Second argument should be a list')
+  }
+
+  return list.reduce(func, init)
+}
+
 export const list = function () {
   return processList([...arguments])
 }

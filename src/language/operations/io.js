@@ -2,8 +2,11 @@
 
 import fs from 'fs'
 
+import {processList} from './util'
+
 export const print = function () {
-  console.log(...arguments)
+  const args = processList([...arguments])
+  console.log(...args)
 }
 
 export const error = function () {
@@ -18,6 +21,5 @@ export const load = function () {
   files.forEach((file) => {
     const content = fs.readFileSync(file).toString()
     statment.many().parse(content)
-    // content.split('\n').forEach(statment.parse.bind(statment))
   })
 }

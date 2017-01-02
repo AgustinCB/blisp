@@ -4,6 +4,20 @@ import {statment} from '../lib/language'
 const should = chai.should()
 
 describe('#list', function() {
+  it('should map a list', function () {
+    statment.parse("(map (# '(x) '(+ 1 x)) (list 1 2))").get().should.deep.equal([ 2, 3 ])
+  })
+
+  it('should go over a list', function () {
+    statment.parse("(global '(x) (list 3))").get()
+    statment.parse("(foreach (# '(l) '(global '(x) (join x l))) (list (list 1 2)))").get()
+    statment.parse('`x').get().should.deep.equal([ 3, 1, 2 ])
+  })
+
+  it('should reduce a list', function () {
+    statment.parse("(reduce (# '(acc x) '(+ acc x)) (list 1 2) 0)").get().should.deep.equal(3)
+  })
+
   it('should create a list of elements', function () {
     const res = statment.parse('(list 1 2 3)')
     res.get().should.deep.equal([ 1, 2, 3 ])

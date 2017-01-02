@@ -64,9 +64,6 @@ export const func = function () {
   const result = function () {
     const funcArgs = [...arguments].map((arg) => arg instanceof Symbol ? arg.value : arg)
 
-    if (funcArgs.length > argList.length && !extraArgs) {
-      throw new Error('Passing too many arguments!')
-    }
     if (funcArgs.length < argList.length) {
       return this.bind(this, ...funcArgs)
     }
