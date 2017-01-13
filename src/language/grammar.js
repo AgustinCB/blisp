@@ -39,6 +39,7 @@ export const keywords = {
   eval: parsec.item.startsWith('eval').then(parsec.space.many()),
   length: parsec.item.startsWith('length').then(parsec.space.many()),
   def: parsec.item.startsWith('def').then(parsec.space.many()),
+  defmacro: parsec.item.startsWith('defmacro').then(parsec.space.many()),
   global: parsec.item.startsWith('global').then(parsec.space.many()),
   print: parsec.item.startsWith('print').then(parsec.space.many()),
   error: parsec.item.startsWith('error').then(parsec.space.many()),

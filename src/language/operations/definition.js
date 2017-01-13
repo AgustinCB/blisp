@@ -42,6 +42,29 @@ export const global = function () {
   def(...arguments, 'global')
 }
 
+export const defmacro = function () {
+  const args = [...arguments]
+  const name = args[0]
+  const params = args[1]
+  const sexpr = args[2]
+
+  if (!(name instanceof Symbol)) {
+    throw new Error('Name of the macro should be a Symbol')
+  }
+
+  if (!(params instanceof QExpression)) {
+    throw new Error('Parameters of the macro should be in a QExpression')
+  }
+
+  if (!(sexpr instanceof SExpression)) {
+    throw new Error('Body of the macro should be in a SExpression')
+  }
+
+  const macro = function () {}
+
+  environment.set(name.name, macro)
+}
+
 export const func = function () {
   const args = [...arguments]
 

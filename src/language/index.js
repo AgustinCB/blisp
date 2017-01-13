@@ -37,6 +37,7 @@ const builtins = parsec.Parser.operations(
   [ grammar.keywords.func, operations.definition.func ],
   [ grammar.keywords.partial, operations.definition.partial ],
   [ grammar.keywords.def, operations.definition.def ],
+  [ grammar.keywords.defmacro, operations.definition.defmacro ],
   [ grammar.keywords.global, operations.definition.global ],
   [ grammar.keywords.print, operations.io.print ],
   [ grammar.keywords.error, operations.io.error ],
