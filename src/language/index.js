@@ -7,9 +7,19 @@ import {SExpression, QExpression} from './expressions'
 
 const lazyList = parsec.lazy(() => list)
 
-const evaluationStatment = grammar.chars.graveAccent.then(lazyList.or(grammar.types.symbol)).then((elements) => operations.list.evaluate(elements))
-const unevaluatedStatment = grammar.chars.singleQuote.then(lazyList).then((elements) => new QExpression(elements))
-const evaluatedStatment = lazyList.then((elements) => new SExpression(elements))
+const evaluationStatment =
+  grammar.chars.graveAccent
+    .then(lazyList.or(grammar.types.symbol))
+    .then((elements) => { console.log('one', elements); return operations.list.evaluate(elements) })
+
+const unevaluatedStatment =
+  grammar.chars.singleQuote
+    .then(lazyList)
+    .then((elements) => { console.log('two', elements); return new QExpression(elements) })
+
+const evaluatedStatment =
+  lazyList
+    .then((elements) => { console.log('three', elements); return new SExpression(elements) })
 
 export const statment =
   evaluatedStatment
