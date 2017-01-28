@@ -17,7 +17,7 @@ describe('#definition', function () {
   })
 
   xit('should be able to define a macro', function () {
-    statment.parse('(defmacro lcomp \'(expression for var in list condition condition-test) (map (# \'(`var) \'(`expression)) list))').get().should.equal('')
+    statment.parse('(defmacro lcomp \'(expression for var in list condition condition-test) \'(map (# \'(`var) \'(`expression)) list))').get().should.equal('')
     statment.parse('(lcomp (+ 1 item) for item in (list 1 2 3))').get().should.deep.equal([ 2, 3, 4 ])
   })
 

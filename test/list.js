@@ -12,7 +12,7 @@ describe('#list', function() {
     statment.parse("(map (# '(x) '(+ 1 x)) (list 1 2))").get().should.deep.equal([ 2, 3 ])
   })
 
-  it('should go over a list', function () {
+  it.only('should go over a list', function () {
     statment.parse("(global '(x) (list 3))").get()
     statment.parse("(foreach (# '(l) '(global '(x) (join x l))) (list (list 1 2)))").get()
     statment.parse('`x').get().should.deep.equal([ 3, 1, 2 ])

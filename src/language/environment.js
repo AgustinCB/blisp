@@ -1,6 +1,6 @@
 class Environment {
   constructor () {
-    this.namespaces = new Map()
+    this.namespaces = new Map([['macros', new Map()]])
     this.namespacesPile = []
     this.addNamespace('global')
   }
@@ -35,7 +35,14 @@ class Environment {
     namespace.set(name, value)
   }
 
-  get (name) {
+  get (name, environment) {
+    if (environment) {
+      const namespace = this.namespaces.get(environment)
+      if (namespace) {
+        return namespace.get(name)
+      }
+      return
+    }
     for (let i = this.namespacesPile.length - 1; i >= 0; i--) {
       const namespace = this.namespacesPile[i]
       if (namespace.has(name)) {
