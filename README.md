@@ -1,3 +1,3 @@
-# npm boilerplate
+# Basic lisp
 
-Basic boilerplate to build a NPM package using babel to compile ES6 JS and with support to tests and Continuos Integration.
+Basic lisp interpreter in Javascript to run in a browser. Still under construction.
